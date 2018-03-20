@@ -1,9 +1,10 @@
 import CallExpression from './CallExpression';
 import { NodeType } from './NodeType';
-import { NodeBase } from './shared/Node';
+import { Node, NodeBase } from './shared/Node';
 import MagicString from 'magic-string';
 import NamespaceVariable from '../variables/NamespaceVariable';
 import { RenderOptions } from '../../utils/renderHelpers';
+import Module from '../../Module';
 
 export default class Import extends NodeBase {
 	type: NodeType.Import;
@@ -11,6 +12,17 @@ export default class Import extends NodeBase {
 
 	private resolution: NamespaceVariable | string | void;
 	private resolutionInterop: boolean;
+
+	constructor(
+		esTreeNode: any,
+		nodeConstructors: { [name: string]: typeof NodeBase },
+		parent: Node,
+		module: Module,
+		dynamicImportReturnList: Import[]
+	) {
+		super(esTreeNode, nodeConstructors, parent, module, dynamicImportReturnList);
+		dynamicImportReturnList.push(this);
+	}
 
 	setResolution(resolution: NamespaceVariable | string | void, interop: boolean): void {
 		this.resolution = resolution;
