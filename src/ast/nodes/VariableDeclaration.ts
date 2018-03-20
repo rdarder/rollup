@@ -12,6 +12,8 @@ import { isIdentifier } from './Identifier';
 import Variable from '../variables/Variable';
 import { BLANK } from '../../utils/object';
 import { ObjectPath } from '../values';
+import Import from './Import';
+import Scope from '../scopes/Scope';
 
 function isReassignedExportsMember(variable: Variable): boolean {
 	return (
@@ -65,8 +67,10 @@ export default class VariableDeclaration extends NodeBase {
 		return addedNewNodes;
 	}
 
-	initialiseChildren() {
-		this.declarations.forEach(child => child.initialiseDeclarator(this.scope, this.kind));
+	initialiseChildren(_parentScope: Scope, dynamicImportReturnList: Import[]) {
+		this.declarations.forEach(child =>
+			child.initialiseDeclarator(this.scope, dynamicImportReturnList, this.kind)
+		);
 	}
 
 	render(code: MagicString, options: RenderOptions, nodeRenderOptions: NodeRenderOptions = BLANK) {
