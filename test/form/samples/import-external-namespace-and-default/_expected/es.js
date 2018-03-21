@@ -1,5 +1,6 @@
-import foo__default, { bar } from 'foo';
+import * as foo from 'foo';
+import foo__default, {  } from 'foo';
 
-console.log( bar );
+console.log( foo );
 
 console.log( foo__default );
